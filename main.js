@@ -78,17 +78,19 @@ class App {
     }
 
     handleSearch() {
-        const rawCall = this.inputEl.value.trim()
+        const rawCall = this.inputEl.value.trim().toUpperCase()
+        this.inputEl.value = rawCall
 
         if (!rawCall) return
 
         const result = this.lookup.find(rawCall)
-        result.long *= -1
+        const long = result.long * -1
+        const lat = result.lat
         if (result) {
             this.displayResult(result)
             this.mapManager.showLocation(
-                result.lat,
-                result.long,
+                lat,
+                long,
                 `<b>${rawCall}</b><br>${result.entity}<br>CQ: ${result.cq} / ITU: ${result.itu}`
             )
         } else {
