@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DXCC Lookup</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="main.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Left Panel: Controls & Info -->
+        <section class="card">
+            <h1>DXCC Lookup</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Amateur Radio Call Sign</p>
+
+            <label for="callsignInput">Enter Call Sign</label>
+            <input type="text" id="callsignInput" placeholder="e.g. W1AW, DL, VK4" autocomplete="off">
+            <button id="searchBtn">Find Entity</button>
+
+            <div id="resultArea" class="results-list">
+                <div class="entity-name">
+                    <span id="resFlag" class="flag-display"></span>
+                    <span id="resEntity">--</span>
+                </div>
+
+                <div class="result-row">
+                    <span class="key">Prefix</span>
+                    <span class="val" id="resPrefix">--</span>
+                </div>
+                <div class="result-row">
+                    <span class="key">Country (ISO)</span>
+                    <span class="val" id="resCountry">--</span>
+                </div>
+                <div class="result-row">
+                    <span class="key">CQ Zone</span>
+                    <span class="val" id="resCQ">--</span>
+                </div>
+                <div class="result-row">
+                    <span class="key">ITU Zone</span>
+                    <span class="val" id="resITU">--</span>
+                </div>
+                <div class="result-row">
+                    <span class="key">Continent</span>
+                    <span class="val" id="resCont">--</span>
+                </div>
+                <div class="result-row">
+                    <span class="key">UTC Offset</span>
+                    <span class="val" id="resUTC">--</span>
+                </div>
+                <div class="result-row">
+                    <span class="key">Latitude</span>
+                    <span class="val" id="resLat">--</span>
+                </div>
+                <div class="result-row">
+                    <span class="key">Longitude</span>
+                    <span class="val" id="resLon">--</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Panel: Map -->
+        <section class="card">
+            <h2>World Map</h2>
+            <div id="map"></div>
+        </section>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+
+    </script>
+</body>
+
+</html>
