@@ -13,10 +13,6 @@ export class CallsignLookup {
         const cs = callsign.toUpperCase()
 
         // 1. Check for Exact Match (=CALL)
-        /*
-        if (cs === '4U1VIC') {
-            debugger;
-        }*/
         const exact = this._walk(`=${cs}`, mode)
         if (exact) return exact
 
@@ -43,7 +39,7 @@ export class CallsignLookup {
 
                 // Update lastResult if this node is a terminal value
                 if (node.v !== undefined) {
-                    lastResult = pool[node.v]                    
+                    lastResult = pool[node.v]
                 }
                 if (mode === CallsignLookup.mode_cqww && node.c !== undefined) {
                     lastResult = pool[node.c]
@@ -59,7 +55,7 @@ export class CallsignLookup {
             if (arrl_entity && arrl_entity.country)
                 lastResult.country = arrl_entity.country
         }
-        if(lastResult) lastResult.prefix = lastResult.prefix.replace(/^\*/,"")
+        if (lastResult) lastResult.prefix = lastResult.prefix.replace(/^\*/, "")
         return lastResult
     }
 }
