@@ -22,7 +22,7 @@
             <p style="color: var(--text-muted); font-size: 0.9rem;">Amateur Radio Call Sign</p>
 
             <label for="callsignInput">Enter Call Sign</label>
-            <input type="text" id="callsignInput" placeholder="e.g. W1AW, DL, VK4" autocomplete="off">
+            <input type="text" id="callsignInput" placeholder="e.g. DJ1TF, JJ1QPB" autocomplete="off">
             <button id="searchBtn">Find Entity</button>
 
             <div id="resultArea" class="results-list">
@@ -35,10 +35,12 @@
                     <span class="key">Prefix</span>
                     <span class="val" id="resPrefix">--</span>
                 </div>
+
                 <div class="result-row">
-                    <span class="key">Country (ISO)</span>
-                    <span class="val" id="resCountry">--</span>
+                    <span class="key">Entity Id</span>
+                    <span class="val" id="resId">--</span>
                 </div>
+
                 <div class="result-row">
                     <span class="key">CQ Zone</span>
                     <span class="val" id="resCQ">--</span>
@@ -51,6 +53,10 @@
                     <span class="key">Continent</span>
                     <span class="val" id="resCont">--</span>
                 </div>
+                <div class="result-row">
+                    <span class="key">Country (ISO)</span>
+                    <span class="val" id="resCountry">--</span>
+                </div>                
                 <div class="result-row">
                     <span class="key">UTC Offset</span>
                     <span class="val" id="resUTC">--</span>
@@ -68,7 +74,7 @@
 
         <!-- Right Panel: Map -->
         <section class="card">
-            <h2>World Map</h2>
+           
             <div id="map"></div>
         </section>
     </div>

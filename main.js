@@ -104,7 +104,8 @@ class App {
         document.getElementById('resFlag').textContent = data.flag
         document.getElementById('resEntity').textContent = data.entity
         document.getElementById('resPrefix').textContent = data.prefix
-        document.getElementById('resCountry').textContent = `${data.country} (ID: ${data.entity_id})`
+        document.getElementById('resId').textContent = data.entity_id        
+        document.getElementById('resCountry').textContent = data.country //`${data.country} (ID: ${data.entity_id})`
         document.getElementById('resCQ').textContent = data.cq
         document.getElementById('resITU').textContent = data.itu
         document.getElementById('resCont').textContent = data.cont
