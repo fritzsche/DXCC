@@ -46,7 +46,7 @@ function build() {
     }
 
     // imports a cty file
-    const importCty = (rawData) => {
+    const importCty = (rawData, isLocal = false) => {
         const blocks = rawData.split(';')
 
         blocks.forEach(block => {
@@ -58,32 +58,43 @@ function build() {
             const primaryPrefix = header[7].trim()
 
             const entityId = prefixObject[primaryPrefix.replace(/^=/, '')]
-            const isoMatch = isoData.dxcc.find(i => {
-                let isValid = true
-                if (i.validEnd) {
-                    const end = new Date(i.validEnd)
-                    const today = new Date()
-                    if (end < today) {
-                        isValid = false
-                    }
+
+            let baseInfo
+            if (isLocal) {
+                baseInfo = {
+                    entity: entityName,
+                    long: parseFloat(header[5]),
+                    lat: parseFloat(header[4]),
+                    utc: parseInt(header[6]),
                 }
-                return isValid && i.entityCode === entityId
-            })
+            } else {
+                const isoMatch = isoData.dxcc.find(i => {
+                    let isValid = true
+                    if (i.validEnd) {
+                        const end = new Date(i.validEnd)
+                        const today = new Date()
+                        if (end < today) {
+                            isValid = false
+                        }
+                    }
+                    return isValid && i.entityCode === entityId
+                })
 
-            const isoCode = isoMatch && isoMatch.countryCode !== 'ZZ' ? isoMatch.countryCode : '??'
-            const baseInfo = {
-                entity: entityName,
-                entity_id: entityId ? entityId : 0,
-                prefix: primaryPrefix || '',
-                country: isoCode,
-                flag: isoMatch ? isoMatch.flag : '',
-                cq: parseInt(header[1]),
-                itu: parseInt(header[2]),
-                cont: header[3].trim(),
-                long: parseFloat(header[5]),
-                lat: parseFloat(header[4]),
-                utc: parseInt(header[6]),
+                const isoCode = isoMatch && isoMatch.countryCode !== 'ZZ' ? isoMatch.countryCode : '??'
+                baseInfo = {
+                    entity: entityName,
+                    entity_id: entityId ? entityId : 0,
+                    prefix: primaryPrefix || '',
+                    country: isoCode,
+                    flag: isoMatch ? isoMatch.flag : '',
+                    cq: parseInt(header[1]),
+                    itu: parseInt(header[2]),
+                    cont: header[3].trim(),
+                    long: parseFloat(header[5]),
+                    lat: parseFloat(header[4]),
+                    utc: parseInt(header[6]),
 
+                }
             }
 
             const prefixLine = lines.slice(1).join('')
@@ -117,17 +128,48 @@ function build() {
                     if (!node[char]) node[char] = {}
                     node = node[char]
                 }
-                if (currentInfo.prefix.startsWith('*')) {
-                    node.c = valIdx
-                } else {
-                    node.v = valIdx
+                if (isLocal) {
+                    node.l = valIdx
+                } else
+                    if (currentInfo.prefix.startsWith('*')) {
+                        node.c = valIdx
+                    } else {
+                        node.v = valIdx
 
-                }
+                    }
             })
         })
     }
-    const ctyRaw = fs.readFileSync(CTY_FILE, 'utf8')
+    let ctyRaw = fs.readFileSync(CTY_FILE, 'utf8')
     importCty(ctyRaw)
+
+    ctyRaw = fs.readFileSync('./EU_cty.dat', 'utf8')
+    importCty(ctyRaw,true)
+
+    ctyRaw = fs.readFileSync('./NA_cty.dat', 'utf8')
+    importCty(ctyRaw,true)
+
+
+    ctyRaw = fs.readFileSync('./SA_cty.dat', 'utf8')
+    importCty(ctyRaw,true)
+
+    ctyRaw = fs.readFileSync('./AF_cty.dat', 'utf8')
+    importCty(ctyRaw,true)    
+
+    ctyRaw = fs.readFileSync('./BY_cty.dat', 'utf8')
+    importCty(ctyRaw,true)    
+
+    ctyRaw = fs.readFileSync('./VK_cty.dat', 'utf8')
+    importCty(ctyRaw,true)    
+
+    ctyRaw = fs.readFileSync('./AS_cty.dat', 'utf8')
+    importCty(ctyRaw,true)    
+
+    ctyRaw = fs.readFileSync('./cty_rus.dat', 'utf8')
+    importCty(ctyRaw,true)    
+
+
+
 
     const output = `// Auto-generated Amateur Radio Lookup DNA\nexport const pool = ${JSON.stringify(pool)};\nexport const trie = ${JSON.stringify(trie)};`
     fs.writeFileSync(OUTPUT_FILE, output)

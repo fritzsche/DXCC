@@ -8,6 +8,7 @@ export class CallsignLookup {
      */
     static mode_cqww = 'CQ'
     static mode_arrl = 'ARRL'
+    static mode_local = 'LOCAL'
     find(callsign, mode = CallsignLookup.mode_cqww) {
         if (!callsign) return null
         const cs = callsign.toUpperCase()
@@ -39,10 +40,13 @@ export class CallsignLookup {
 
                 // Update lastResult if this node is a terminal value
                 if (node.v !== undefined) {
-                    lastResult = pool[node.v]
+                    lastResult = { ...pool[node.v] }
                 }
                 if (mode === CallsignLookup.mode_cqww && node.c !== undefined) {
-                    lastResult = pool[node.c]
+                    lastResult = { ...pool[node.c] }
+                }
+                if (mode == CallsignLookup.mode_local && node.l !== undefined) {
+                    lastResult = { ...pool[node.l] }
                 }
             } else {
                 break // No further match possible
@@ -52,10 +56,22 @@ export class CallsignLookup {
         if (mode === CallsignLookup.mode_cqww && lastResult && lastResult.prefix.startsWith('*')) {
             let arrl_entity = this.find(str.replace(/^=/, ""), CallsignLookup.mode_arrl)
 
-            if (arrl_entity && arrl_entity.country)
+            if (arrl_entity && arrl_entity.country) {
                 lastResult.country = arrl_entity.country
+                lastResult.arrl_prefix = arrl_entity.prefix
+            }
         }
-        if (lastResult) lastResult.prefix = lastResult.prefix.replace(/^\*/, "")
+
+        if (mode !== CallsignLookup.mode_local) {
+            const local_prefix = str.replace(/^=/, "")
+            const local_entity = this.find(local_prefix, CallsignLookup.mode_local)
+            if (lastResult && local_entity && lastResult.entity !== local_entity.entity) {
+                lastResult.entity = `${lastResult.entity} (${local_entity.entity})`
+                lastResult.long = local_entity.long
+                lastResult.lat = local_entity.lat
+            }
+        }
+        if (lastResult && lastResult.prefix) lastResult.prefix = lastResult.prefix.replace(/^\*/, "")
         return lastResult
     }
 }
