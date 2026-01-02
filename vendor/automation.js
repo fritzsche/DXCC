@@ -70,8 +70,6 @@ function build() {
                 return isValid && i.entityCode === entityId
             })
 
-
-
             const isoCode = isoMatch && isoMatch.countryCode !== 'ZZ' ? isoMatch.countryCode : '??'
             const baseInfo = {
                 entity: entityName,
